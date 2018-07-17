@@ -39,6 +39,7 @@ body {
 }
 
 .todaysDog {
+  position: relative;
   width: 100%;
   height: 100vh;
   background-size: cover;
@@ -52,14 +53,28 @@ body {
 }
 
 .content h2 {
+  /* position: absolute; */
   text-align: center;
   padding-top: 5px;
-  /* background-color: rgba(0, 123, 255, 0.05); */
   border-bottom: 1px solid white;
   padding-bottom: 5px;
   margin-bottom: 0;
   margin-top: 0;
   font-family: 'Dancing Script', cursive;
+  z-index: 99;
+  width: 100%;
+  /* color: white; */
+}
+
+.content .breed h3 {
+  position: absolute;
+  z-index: 99;
+  padding: 15px;
+  color: #abf5fff5;
+  font-size: 2.5em;
+  text-shadow: 1px 1px 1px black;
+  text-transform: capitalize;
+  /* top: 125px; */
 }
 
 .container {
@@ -108,7 +123,8 @@ body {
 }
 
 .clearBtn {
-  visibility: hidden;
+  /* visibility: hidden; */
+  opacity: 0;
   background-color: aliceblue;
   border: 1px solid cornflowerblue;
 }
@@ -133,7 +149,7 @@ body {
   border-radius: 100%;
   margin-bottom: 20px;
   background-size: cover;
-  background-image: attr('src');
+  /* background-image: attr('src'); */
   opacity: 0;
   z-index: 90;
   transition: all 1s ease;
@@ -177,7 +193,7 @@ body {
   width: 0;
   height: 0;
   opacity: 0;
-  max-width: 60%;
+  /* max-width: 60%; */
   display: flex;
   position: fixed;
   border: 1px solid aliceblue;
@@ -208,6 +224,7 @@ body {
 .modalBody h2 {
   text-align: left;
   margin-bottom: 15px;
+  border-bottom: none;
 }
 
 .modalBody h3 {
@@ -261,15 +278,25 @@ body {
   margin-top: 8px;
   font-size: 13px;
 }
+/* 
+.form-control {
+  width: 90%;
+} */
 
 .searchForm {
-  margin: 15px 15px;
+  /* margin: 15px 15px; */
   padding: 15px;
+  width: 100%;
 }
 
 .fa-search {
  color:rgba(28, 177, 227, 0.5);
- margin-right: 10px;
+ /* margin-left: 10px; */
+}
+
+.breedOptions {
+  /* display: flex; */
+  align-items: center;
 }
 
 .loading {
@@ -294,19 +321,11 @@ h2:empty {
   background-color: none;
 }
 
-/* .thumbnailContainer {
-  width: 200px;
-  height: 200px;
-} */
-
 .thumbnail {
   width: 200px;
-  /* width: 100%; */
-  /* height: 100%; */
   border: 1px groove white;
   height: 200px;
   background-size: cover;
-  /* background-position: center; */
   float: left;
   margin-right: 10px;
   margin-top: 10px;
@@ -314,9 +333,11 @@ h2:empty {
   z-index: 98;
   padding-top: 200px;
   background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1s ease;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 568px) {
 
   .filterContainer {
     flex-direction: column !important;
@@ -324,9 +345,9 @@ h2:empty {
   }
 
   
-  .filters {
+  /* .filters {
     margin-top: 15px;
-  }
+  } */
 
   .letterContainer {
     margin-top: 15px;
@@ -336,13 +357,17 @@ h2:empty {
 
   .dog {
     width: 100px;
-    height: 150px;
+    /* height: 150px; */
   }
 
   .dogPic {
     height: 100px;
     width: 100px;
     /* transform: scale(.8); */
+  }
+
+  .dogBreed {
+    font-size: 10px;
   }
 
   .modalBody {

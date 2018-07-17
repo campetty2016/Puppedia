@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-let axios = require('axios');
 let jsonp = require('jsonp');
-let FontAwesome = require('react-fontawesome');
 
 class Dogs extends Component {
 
@@ -14,6 +12,7 @@ class Dogs extends Component {
 
     this.letters = ['A','B','C','D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
     'N', 'O', 'P', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
     this.dogBreeds = [
       {
        "name": "affenpinscher", 
@@ -35,7 +34,7 @@ class Dogs extends Component {
        },
        {
         "name": "alaskan malamute", 
-        "img" : "n02110063_1034.jpg"
+        "img" : "n02110063_1034.jpg",
        },
        {
         "name": "american eskimo dog", 
@@ -123,7 +122,7 @@ class Dogs extends Component {
       description: []
     };
 
-    let images = [];
+    // let images = [];
 
     if(this.dogBreeds) {
       document.body.style.overflow = "auto";
@@ -133,9 +132,14 @@ class Dogs extends Component {
 
   componentDidMount() {
 
-    let lazyImages = document.getElementsByClassName('dogPic'),
-    search = document.getElementsByClassName('search')[0].value,
-    breed = document.getElementsByClassName('filters')[0].value;
+
+    window.addEventListener('load', () => {
+      window.scrollTo(0, 500);
+    });
+
+    let lazyImages = document.getElementsByClassName('dogPic');
+    // search = document.getElementsByClassName('search')[0].value,
+    // breed = document.getElementsByClassName('filters')[0].value;
   
     // if(search !== "" || breed !== "Choose Breed") {
 
@@ -153,13 +157,11 @@ class Dogs extends Component {
     //   }
     // }
   
-    document.body.style.overflow = "auto";
+    // document.body.style.overflow = "auto";
 
     this.setState({breeds: this.dogBreeds.sort((a,b) => a.name.localeCompare(b.name))});
 
-    console.log(this.dogBreeds);
-
-    let images = [];
+    // console.log(this.dogBreeds);
 
     window.addEventListener('scroll',(e) => {
 
@@ -171,27 +173,45 @@ class Dogs extends Component {
       // }
     }); 
 
-    if(lazyImages.length <= 6) {
-
-      this.showImg();
+    window.addEventListener('load',(e) => {
 
       // for(let i=0; i < lazyImages.length; i++) {
 
-        // lazyImages[i].addEventListener('load',(e) => {
+      if(window.location.href === 'http://localhost:3000/dogs'){
+        this.showImg();
+      }
 
-
-        //   lazyImages[i].style.backgroundImage = lazyImages[i].getAttribute('data-src');
-        //   lazyImages[i].style.opacity = 1;
-
-        // }); 
+      // if(lazyImages.length > 6) {
+      //   this.lazyload();
       // }
-    }
+      // }
+    });
+
+    // if(lazyImages.length < 5) {
+
+    //   this.showImg();
+
+    //   // for(let i=0; i < lazyImages.length; i++) {
+
+    //     // lazyImages[i].addEventListener('load',(e) => {
+
+
+    //     //   lazyImages[i].style.backgroundImage = lazyImages[i].getAttribute('data-src');
+    //     //   lazyImages[i].style.opacity = 1;
+
+    //     // }); 
+    //   // }
+    // }
  
     for(let i=0; i < this.state.breeds.length; i++) {
 
       // if(this.elementInViewport(document.getElementById(this.state.breeds[i].name.replace(/ /g, "") + "_pic"))) {
-      console.log(this.state.breeds[i].name);
-      console.log(document.getElementById(this.state.breeds[i].name.replace(/ /g, "") + "_pic"));
+      // console.log(this.state.breeds[i].name);
+      // console.log(document.getElementById(this.state.breeds[i].name.replace(/ /g, "") + "_pic"));
+
+      // if(!document.getElementById(this.state.breeds[i].name[0])) {
+      //   document.getElementById(this.state.breeds[i].name[0]).style.display = "none";
+      // }
         
 
         // document.getElementById(this.state.breeds[i].name.replace(/ /g, "") + "_pic").style.backgroundImage = document.getElementById(this.state.breeds[i].name.replace(/ /g, "") + "_pic").getAttribute('data-src');
@@ -218,8 +238,16 @@ class Dogs extends Component {
 
     // console.log(this.images[0].affenpinscher)
 
+   
 
     this.dogBreeds.map((breed, index) => {
+
+      // console.log(window.location.href);
+      // console.log(window.location.href == `http://localhost:3000/dogs/${breed.name}`);
+
+      if(window.location.href === `http://localhost:3000/dogs/${breed.name.replace(/ /g, '_')}`) {
+        this.loadModal(breed.name);
+      }
 
     //     // if(response.status == 200) {
     //     // this.images.push({[breed]: response.data.message});  
@@ -364,13 +392,17 @@ class Dogs extends Component {
 
     let lazyImages = document.getElementsByClassName('dogPic');
 
-    console.log(lazyImages);
+    // console.log(lazyImages);
 
     for(let i=0; i < lazyImages.length; i++) {
       // console.log(lazyImages[i]);
-      lazyImages[i].style.backgroundImage = lazyImages[i].getAttribute('data-src');
-      lazyImages[i].style.opacity = 1;
+
+      if(i < 5) {
+        lazyImages[i].style.backgroundImage = lazyImages[i].getAttribute('data-src');
+        lazyImages[i].style.opacity = 1;
+      }
     }
+
 
     // console.log(breed);
 
@@ -386,7 +418,9 @@ class Dogs extends Component {
     this.setState({breeds: this.dogBreeds.sort((a,b) => a.name.localeCompare(b.name))});    
 
     let breed = e.target.value;
-    document.getElementsByClassName('clearBtn')[0].style.visibility = "visible";
+    // document.getElementsByClassName('clearBtn')[0].style.visibility = "visible";
+    document.getElementsByClassName('breedOptions')[0].style.display = "flex";
+    document.getElementsByClassName('clearBtn')[0].style.opacity = 1;
 
     switch (breed) {
       case "Hound":
@@ -460,7 +494,7 @@ class Dogs extends Component {
       // break;
     }
 
-    console.log(this.dogs);
+    // console.log(this.dogs);
   }
 
   lazyload() {
@@ -468,7 +502,7 @@ class Dogs extends Component {
     // console.log(condition);
     let lazyImages = document.getElementsByClassName('dogPic');
 
-    console.log(lazyImages.length);
+    // console.log(lazyImages.length);
 
     for(let i=0; i < lazyImages.length; i++) {
 
@@ -492,7 +526,7 @@ class Dogs extends Component {
   elementInViewport(el) {
     let img = el.getBoundingClientRect();
 
-    console.log(el);
+    // console.log(el);
     return (
         img.top >= 0 &&
         img.left >= 0 &&
@@ -513,7 +547,7 @@ class Dogs extends Component {
 
     for(let i=0; i < this.state.breeds.length; i++) {
 
-      if(letter == this.state.breeds[i][0].toUpperCase()) {
+      if(letter === this.state.breeds[i][0].toUpperCase()) {
         this.dogs.push(this.state.breeds[i]);
 
         document.getElementsByClassName(this.state.breeds[i].name.replace(/ /g, "") + '_pic')[i].style.backgroundImage = window.getComputedStyle(document.getElementsByClassName(this.state.breeds[i].name.replace(/ /g, "") + '_pic')[i]).getPropertyValue('background-image');
@@ -528,32 +562,28 @@ class Dogs extends Component {
 
   resetDogs() {
     this.setState({breeds: this.dogBreeds.sort((a,b) => a.name.localeCompare(b.name))});
-    document.getElementsByClassName('clearBtn')[0].style.visibility = "hidden";
+    // document.getElementsByClassName('clearBtn')[0].style.visibility = "hidden";
+    document.getElementsByClassName('clearBtn')[0].style.opacity = 0;
     document.getElementsByClassName('filters')[0].value = "Choose Breed";
+    document.getElementsByClassName('breedOptions')[0].style.display = "grid";
+
 
     for(let i=0; i < document.getElementsByClassName('letter').length; i++) {
       document.getElementsByClassName('letter')[i].style.fontWeight = "normal";
     }
 
+    for(let i=0; i < this.state.breeds.length; i++) {
+      document.getElementsByClassName('dogPic')[i].style.opacity = 1;
+      // document.getElementsByClassName(this.state.breeds[i].name.replace(/ /g, "") + '_pic')[i].style.backgroundImage = window.getComputedStyle(document.getElementsByClassName(this.state.breeds[i].name.replace(/ /g, "") + '_pic')[i]).getPropertyValue('background-image');
+    }
+
     document.getElementsByClassName('search')[0].value = "";
   }
 
-  
+  loadModal(breed) {
 
-  showModal(e) {
-
-    let breed = e.target.name;
-    let image = e.target.style;
     let url = '';
     let breeds = [];
-    
-    // let img = document.getElementById(image).style.backgroundImage;
-
-    // console.log(img);
-
-    // let modalImage = document.getElementsByClassName('modalImage')[0];
-
-    // modalImage.style.backgroundImage = img;
 
     if (breed.split(' ').length > 1 && !breed.match("-") && !breed.match("st. bernard")) {
       for(let i=0; i < breed.split(' ').length; i++) {
@@ -623,37 +653,46 @@ class Dogs extends Component {
         let modalTitle = document.getElementsByClassName('modalTitle')[0];
         let modalDesc = document.getElementsByClassName('modalDesc')[0];
         let modalPic = document.getElementsByClassName('modalPic')[0];
-        let modalthumbnail = document.getElementsByClassName('thumbnail')[0];
+        let modalThumbnail = document.getElementsByClassName('thumbnail')[0];
 
         modal.style.height = "100%";
         modal.style.width = "100%";
         modal.style.opacity = 1;
 
-        modalBody.style.height = "60%";
-        modalBody.style.width = "60%";
+        modalBody.style.height = "80%";
+        modalBody.style.width = "80%";
         modalBody.style.opacity = 1;
 
         modalHeader.style.height = "45px";
-        modalHeader.style.width = "100%";
+        modalHeader.style.width = "80%";
         modalHeader.style.opacity = 1;
 
         modalDesc.style.opacity = 1;
         modalTitle.innerHTML = breed.replace('_', ' ');
-        modalthumbnail.style.backgroundImage = "url('" + data.query.pages[num].original.source +"')";        
+        modalThumbnail.style.backgroundImage = "url('" + data.query.pages[num].original.source +"')";  
+        modalThumbnail.style.opacity = 1;
         modalDesc.innerHTML = data.query.pages[num].extract;
         // console.log(data.query.pages[num].original.source);
         // modalDesc.insertBefore(modalPic, modalDesc.innerHTML);
 
-        if(breed == "affenpinscher") {
-          modalthumbnail.style.backgroundPosition = "left";
+        if(breed === "affenpinscher" || breed === "alaskan malamute" || breed === "beagle") {
+          modalThumbnail.style.backgroundPosition = "left";
         } else {
-          modalthumbnail.style.backgroundPosition = "center";          
+          modalThumbnail.style.backgroundPosition = "center";          
         }
 
         // console.log(window.getComputedStyle(document.getElementById(breed.replace(/ /g, "") + '_pic')).getPropertyValue('background-image'));
         modalPic.style.backgroundImage = window.getComputedStyle(document.getElementsByClassName(breed.replace(/ /g, "") + '_pic')[0]).getPropertyValue('background-image');
       }
     })
+  }
+
+  
+
+  showModal(e) {
+
+    let breed = e.target.name;
+    this.loadModal(breed);
   }
 
   closeModal() {
@@ -692,7 +731,10 @@ class Dogs extends Component {
 
     if(!search || !breed) {
       this.setState({breeds: this.dogBreeds.sort((a,b) => a.name.localeCompare(b.name))});    
-      document.getElementsByClassName('clearBtn')[0].style.visibility = "hidden";            
+      // document.getElementsByClassName('clearBtn')[0].style.visibility = "hidden";    
+      document.getElementsByClassName('clearBtn')[0].style.opacity = 0;
+      document.getElementsByClassName('breedOptions')[0].style.display = "grid";
+
     }
 
     // console.log(search);
@@ -703,8 +745,12 @@ class Dogs extends Component {
       for(let i=0; i < document.getElementsByClassName('letter').length; i++) {
         document.getElementsByClassName('letter')[i].style.fontWeight = "normal";
       }
+
+      // for(let i=0; i < document.getElementsByClassName('dogPic').length; i++) {
+      //   document.getElementsByClassName('dogPic')[i].style.opacity = 1;
+      // }
   
-      document.getElementById(letter).style.fontWeight = "bold";    
+      document.getElementById(letter).style.fontWeight = "bold";  
     }
 
     if(breed) {
@@ -715,6 +761,8 @@ class Dogs extends Component {
 
           this.dogs.push(this.dogBreeds[i]);
           this.setState({breeds: this.dogs.sort((a,b) => a.name.localeCompare(b.name))});
+
+          // document.getElementsByClassName('dogPic')[i].style.opacity = 1;
         }
       }
       // this.filterBreeds(breed);
@@ -730,14 +778,16 @@ class Dogs extends Component {
         for(let j=0; j < this.dogBreeds[i].name.length; j++) {
           console.log(this.dogBreeds[i].name[j]);
 
-          if(this.dogBreeds[i].name[j].startsWith(search) && letter == this.dogBreeds[i].name[0].toUpperCase() &&
+          if(this.dogBreeds[i].name[j].startsWith(search) && letter === this.dogBreeds[i].name[0].toUpperCase() &&
           this.dogBreeds[i].name.match(breed)) {
             
             this.dogs.push(this.dogBreeds[i]);
             this.setState({breeds: this.dogs.sort((a,b) => a.name.localeCompare(b.name))});         
             
-            document.getElementsByClassName('clearBtn')[0].style.visibility = "visible";
-            
+            // document.getElementsByClassName('clearBtn')[0].style.visibility = "visible";
+            document.getElementsByClassName('breedOptions')[0].style.display = "flex";
+            document.getElementsByClassName('clearBtn')[0].style.opacity = 1;
+
           } else {
             this.setState({breeds: this.dogs.sort((a,b) => a.name.localeCompare(b.name))});                                         
           }
@@ -764,7 +814,10 @@ class Dogs extends Component {
             this.dogs.push(this.dogBreeds[i]);
             this.setState({breeds: this.dogs.sort((a,b) => a.name.localeCompare(b.name))});    
             
-            document.getElementsByClassName('clearBtn')[0].style.visibility = "visible";
+            // document.getElementsByClassName('clearBtn')[0].style.visibility = "visible";
+            document.getElementsByClassName('clearBtn')[0].style.opacity = 1;
+            document.getElementsByClassName('breedOptions')[0].style.display = "flex";
+
             
           } else {
             this.setState({breeds: this.dogs.sort((a,b) => a.name.localeCompare(b.name))});                                 
@@ -787,12 +840,14 @@ class Dogs extends Component {
       
       for(let i=0; i < this.dogBreeds.length; i++) {
       
-        if(letter == this.dogBreeds[i].name[0].toUpperCase()) {
+        if(letter === this.dogBreeds[i].name[0].toUpperCase()) {
           // console.log('ran');
           this.dogs.push(this.dogBreeds[i]);
           this.setState({breeds: this.dogs.sort((a,b) => a.name.localeCompare(b.name))});  
 
-          document.getElementsByClassName('clearBtn')[0].style.visibility = "visible";
+          // document.getElementsByClassName('clearBtn')[0].style.visibility = "visible";
+          document.getElementsByClassName('clearBtn')[0].style.opacity = 1;
+          document.getElementsByClassName('breedOptions')[0].style.display = "flex";
                  
         } else {
           this.setState({breeds: this.dogs.sort((a,b) => a.name.localeCompare(b.name))});                   
@@ -806,7 +861,9 @@ class Dogs extends Component {
           this.dogs.push(this.dogBreeds[i]);
           this.setState({breeds: this.dogs.sort((a,b) => a.name.localeCompare(b.name))});         
           
-          document.getElementsByClassName('clearBtn')[0].style.visibility = "visible";
+          // document.getElementsByClassName('clearBtn')[0].style.visibility = "visible";
+          document.getElementsByClassName('clearBtn')[0].style.opacity = 1;
+          document.getElementsByClassName('breedOptions')[0].style.display = "flex";
           
         } else {
           this.setState({breeds: this.dogs.sort((a,b) => a.name.localeCompare(b.name))});                                         
@@ -841,7 +898,7 @@ class Dogs extends Component {
       <div className="content">
         <h2>Dogs</h2>
         <form className="form-inline my-2 my-lg-0 searchForm">
-         <i className="fa fa-2x fa-search"></i> <input className="form-control mr-sm-2 search" type="text" placeholder="Search" onChange={this.searchDogs} aria-label="Search"/>
+          <input className="form-control mr-sm-2 search" type="text" placeholder="Search" onChange={this.searchDogs} aria-label="Search"/> <i className="fa fa-2x fa-search"></i> 
         </form>
         <div className="filterContainer">
           <div className="letterContainer">
@@ -849,17 +906,20 @@ class Dogs extends Component {
               <div id={letter} className="letter" key={index} onClick={this.searchDogs}>{letter}</div>
             )}
           </div>
-          <select className="filters" onChange={this.filterBreeds}>
-            <option defaultValue="">Choose Breed</option>
-            {this.breedGroups.map((breed, index) =>
-              <option key={index} value={breed}>{breed}</option>
-            )}
-          </select>
-          <button className="clearBtn" onClick={this.resetDogs}>Show All</button>          
+
+          <div className="breedOptions">
+            <select className="filters" onChange={this.filterBreeds}>
+              <option defaultValue="">Choose Breed</option>
+              {this.breedGroups.map((breed, index) =>
+                <option key={index} value={breed}>{breed}</option>
+              )}
+            </select>
+            <button className="clearBtn" onClick={this.resetDogs}>Show All</button>  
+          </div>        
         </div>
         <div className="container">
           {this.state.breeds.map((breed, index) =>
-              <div key={index} className="dog">
+            <div key={index} className="dog">
               <Link to={`/dogs/${breed.name.replace(/ /g, '_')}`}>
                 <div className="loading">
                   <i className="fa fa-spinner fa-2x fa-spin"></i>    
